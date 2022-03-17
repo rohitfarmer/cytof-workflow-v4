@@ -8,7 +8,7 @@
 cmd_args = commandArgs(trailingOnly=TRUE)
 
 # For interactive mode
-yaml_file = "phospho_mini_noqc_sex_age_20.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 # Read yaml file. 
 suppressMessages(library(yaml))
