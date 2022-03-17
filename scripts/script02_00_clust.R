@@ -42,16 +42,16 @@ figures_folder <- file.path("figures", analysis_name)
 
 # Load daFrame with arcsinh transformed data saved in script1.
 sprintf("Loading SCE with arcsinh transformed data saved in script1.")
-sce <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
+sce_arcsinh <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
 
 # CLUSTERING (FlowSom).
 sprintf("CLUSTERING (FlowSOM)")
-daf <- cluster(sce, features = type_markers(sce), 
+sec_clust <- cluster(sce_arcsinh, features = type_markers(sce_arcsinh), 
                xdim = 10, ydim = 10, maxK = no_of_clusters, seed = 1234) 
 
 # Save daFrame 
 sprintf("Saving SCE with clustering data.")
-saveRDS(sce, file.path(results_folder, "sce_clust.rds"))
+saveRDS(sce_clust, file.path(results_folder, "sce_clust.rds"))
 
 sprintf("Done")
 

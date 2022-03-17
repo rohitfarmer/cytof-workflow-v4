@@ -8,7 +8,7 @@
 cmd_args = commandArgs(trailingOnly=TRUE)
 
 # For interactive mode
-yaml_file = "phospho_mini_noqc_sex_age_20.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 # Read yaml file. 
 suppressMessages(library(yaml))
@@ -48,17 +48,17 @@ results_folder <- file.path("results", analysis_name)
 figures_folder <- file.path("figures", analysis_name)
 
 if(!dir.exists(results_folder)){
-  sprintf("Creating %s folder", results_folder)
+  cat(sprintf("Creating %s folder", results_folder))
   dir.create(results_folder, recursive = TRUE)
 } else {
-  sprintf("%s folder already exists. Output will be over written.", results_folder)
+  cat(sprintf("%s folder already exists. Output will be over written.", results_folder))
 }
 
 if(!dir.exists(figures_folder)){
-  sprintf("Creating %s folder", figures_folder)
+  cat(sprintf("Creating %s folder", figures_folder))
   dir.create(figures_folder, recursive = TRUE)
 } else {
-  sprintf("%s folder already exists. Output will be over written.", figures_folder)
+  cat(sprintf("%s folder already exists. Output will be over written.", figures_folder))
 }
 
 # LOAD DATA
@@ -82,6 +82,7 @@ sprintf("Loading fcs files mentioned in the experiment metadata into a flowSet: 
 fcs_raw <- read.flowSet(file = md$file_name, path = file.path("data", data_location),
                         transformation = FALSE, truncate_max_range = FALSE)
 
+stop()
 # Check for file names. They should match to what is in the md$file_name.
 ids <- c(keyword(fcs_raw, "FILENAME"))
 sprintf("Checking .fcs filenames in flowSet.")

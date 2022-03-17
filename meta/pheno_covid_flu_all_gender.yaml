@@ -1,0 +1,15 @@
+analysis_name: pheno_covid_flu_all_gender
+data_type: phenotyping # or stimulation
+data_location: covid_flu # Within data folder.
+args_file: args_covid_flu_pheno_all_gender_no_hd213.txt # Within meta folder.
+panel_file: panel/cytex_phenotyping_panel_36c.txt # Within meta folder.
+condition_levels: 
+  - Healthy_Day0
+  - Healthy_Day7
+  - COVID_Day0
+  - COVID_Day7
+no_of_clusters: 20
+meta_string: meta20
+tsne_no_cells: 1000
+umap_no_cells: 1000
+merging1_file: pheno_mini_noqc_20_merging1.txt

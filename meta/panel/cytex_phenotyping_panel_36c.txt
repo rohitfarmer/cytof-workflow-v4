@@ -1,0 +1,37 @@
+fcs_colname	antigen	marker_class
+BUV395	CD45RA	type
+BUV496	CD16	type
+BUV563	ICOS	type
+BUV661	CD11c	type
+BUV737	CD56	type
+BUV805	CD8	type
+LIVE/DEAD BLUE	Dead cells	type
+BV421	CCR7	type
+Super Bright 436	CD123	type
+eFluor450	CD161	type
+BV480	IgD	type
+BV510	CD3	type
+Pacific Orange	CD20	type
+BV570	IgM	type
+BV605	IgG	type
+BV650	CD28	type
+BV711	CCR6	type
+BV750	CXCR5	type
+BV785	PD-1	type
+BB515	CD141	type
+FITC	CD57	type
+Spark Blue 550	CD14	type
+PerCP	CD45	type
+PerCP-Cy5.5	CD21	type
+PerCP-eFluor710	TCRgd	type
+PE	CD25	type
+CF568	CD4	type
+PE-Dazzle 594	CD24	type
+PE-Cy5	CD95	type
+PE-Cy7	CD183	type
+APC	CD27	type
+Alexa Fluor 647	CD1c	type
+Spark NIR 685	CD19	type
+APC-R700	CD127	type
+APC-eFluor780	HLA-DRC	type
+APC-Fire810 CD38 type
