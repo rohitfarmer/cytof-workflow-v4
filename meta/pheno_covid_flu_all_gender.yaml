@@ -1,8 +1,8 @@
 analysis_name: pheno_covid_flu_all_gender
 data_type: phenotyping # or stimulation
 data_location: covid_flu # Within data folder.
-args_file: args_covid_flu_pheno_all_gender_no_hd213.txt # Within meta folder.
-panel_file: panel/cytex_phenotyping_panel_36c.txt # Within meta folder.
+args_file: args_covid_flu_pheno_day0_gender_no_hd213.txt # Within meta folder.
+panel_file: panel/cytex_phenotyping_panel_36c_corrected.txt # Within meta folder.
 condition_levels: 
   - Healthy_Day0
   - Healthy_Day7
