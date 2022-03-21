@@ -1,4 +1,4 @@
-file name	sample_id	condition	patient_id	gender
+file_name	sample_id	condition	patient_id	gender
 export_20210526_36c covid flu Batch1-20210525-1_Unmixed_Live.fcs	HD101_D7	Healthy_Day7	HD101	F
 export_20210526_36c covid flu Batch1-20210525-2_Unmixed_Live.fcs	HD101_D0	Healthy_Day0	HD101	F
 export_20210526_36c covid flu Batch1-20210525-3_Unmixed_Live.fcs	HD109_D0	Healthy_Day0	HD109	M

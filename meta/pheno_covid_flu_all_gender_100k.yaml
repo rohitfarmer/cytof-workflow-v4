@@ -1,5 +1,6 @@
 analysis_name: pheno_covid_flu_all_gender_100k
 data_type: phenotyping # or stimulation
+FACS: TRUE # TRUE for Flow data.
 data_location: covid_flu_100k # Within data folder.
 args_file: args_covid_flu_pheno_all_gender.txt # Within meta folder.
 panel_file: panel/cytex_phenotyping_panel_36c.txt # Within meta folder.

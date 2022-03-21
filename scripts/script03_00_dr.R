@@ -1,11 +1,15 @@
 #!/usr/bin/env Rscript --vanilla
 
-# PURPOSE: To run CyTOF workflow (Robinson's) version 4. This script carries out clustering
-# using flowSOM and culterConensusPlus. 
+# PURPOSE: To run CyTOF workflow (Robinson's) version 4. This script carries
+# out dimensionality reduction.
 # PUBLICATION: https://f1000research.com/articles/6-748
 
 # Read command line arguments passed to the script. 
 cmd_args = commandArgs(trailingOnly=TRUE)
+
+# Temp. If using RStudio.
+# setwd("/Users/farmerr2/locus/sandbox/projects/mini")
+
 
 # Read yaml file. 
 suppressMessages(library(yaml))
@@ -28,8 +32,8 @@ if(interactive()){
 }
 
 analysis_name <- yam$analysis_name
-no_of_clusters <- yam$no_of_clusters
-meta_string <- yam$meta_string
+tsne_no_cells <- yam$tsne_no_cells
+umap_no_cells <- yam$umap_no_cells
 
 # Load external libraries.
 cat("Loading external libraries.\n")
@@ -40,19 +44,20 @@ suppressMessages(library(tidyverse))
 results_folder <- file.path("results", analysis_name)
 figures_folder <- file.path("figures", analysis_name)
 
-# Load daFrame with arcsinh transformed data saved in script1.
-print("Loading SCE with arcsinh transformed data saved in script1.")
-sce_arcsinh <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
+# Load daFrame with clustering results saved in script2.
+print("Loading SCE with clustering results saved in script2.")
+sce <- readRDS(file.path(results_folder, "sce_clust.rds"))
 
-# CLUSTERING (FlowSom).
-print("CLUSTERING (FlowSOM)")
-sce_clust <- CATALYST::cluster(sce_arcsinh, features = type_markers(sce_arcsinh), 
-               xdim = 10, ydim = 10, maxK = no_of_clusters, seed = 1234, verbose = TRUE) 
+stop()
+# run t-SNE & UMAP                           
+set.seed(1234)          
+print("Calculating t-SNE and UMAP.")
+#sce_tsne <- runDR(sce, "TSNE", cells = tsne_no_cells, features = "type") 
+sce_umap <- runDR(sce, "UMAP", cells = umap_no_cells, features = "type") 
 
-# Save daFrame 
-print("Saving SCE with clustering data.")
-saveRDS(sce_clust, file.path(results_folder, "sce_clust.rds"))
-
+# Save SCE with DR data. 
+print("Saving SCE with DR data.")
+#saveRDS(sce_tsne, file.path(results_folder, "sce_tsne.rds"))
+saveRDS(sce_umap, file.path(results_folder, "sce_umap.rds"))
 
 print("Done")
-

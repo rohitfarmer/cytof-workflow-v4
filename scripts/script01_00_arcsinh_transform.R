@@ -8,7 +8,7 @@
 cmd_args = commandArgs(trailingOnly=TRUE)
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender.yaml"
+yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
 
 # Read yaml file. 
 suppressMessages(library(yaml))
@@ -28,6 +28,7 @@ if(interactive()){
 }
 
 analysis_name <- yam$analysis_name
+data_type <- yam$data_type
 data_location <- yam$data_location
 args_file <- yam$args_file
 panel_file <- yam$panel_file
@@ -37,6 +38,7 @@ tsne_no_cells <- yam$tsne_no_cells
 umap_no_cells <- yam$umap_no_cells
 meta_string <- yam$meta_string
 cofactor <- yam$cofactor
+FACS <- yam$FACS
 
 # Load external libraries.
 cat("Loading external libraries.\n")
@@ -84,24 +86,24 @@ fcs_raw <- read.flowSet(file = md$file_name, path = file.path("data", data_locat
 
 # Check for file names. They should match to what is in the md$file_name.
 ids <- c(keyword(fcs_raw, "FILENAME"))
-sprintf("Checking .fcs filenames in flowSet.")
-sprintf(ids)
+print("Checking .fcs filenames in flowSet.")
+print(ids)
 
 # Spot check that all panel columns are in the flowSet object
-sprintf("Spot check that all panel columns are in the flowSet object %s", 
-        all(panel$fcs_colname %in% colnames(fcs_raw)))
+print(sprintf("Spot check that all panel columns are in the flowSet object %s", 
+        all(panel$fcs_colname %in% colnames(fcs_raw))))
 
 # Construct a SingleCellExperiment object. 
 sce <- prepData(fcs_raw, panel, md, features = panel$fcs_colname, transform = TRUE, cofactor = cofactor,
                 md_cols = list(file = "file_name", id = "sample_id", 
-                               factors = c("condition", diff_cols)))
+                               factors = c("condition", diff_cols)), FACS = FACS)
 
 # Remove fcs raw to save memory.
-rm(fcs_raw)
-gc()
+#rm(fcs_raw)
+#gc()
 
 # Save SCE object.
-sprintf("Saving SCE object with arcsinh transformed data.")
+print("Saving SCE object with arcsinh transformed data.")
 saveRDS(sce, file.path(results_folder, "sce_arcsinh.rds"))
 
 sprintf("Done")

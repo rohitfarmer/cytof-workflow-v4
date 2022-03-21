@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender.yaml"
+yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -51,24 +51,18 @@ marker_names  <- colnames(sce@metadata$SOM_codes)
 # obtained with FlowSOM after the metaclustering step with ConsensusClusterPlus.
 sprintf("Generating figure6.")
 pdf(file =  file.path(figures_folder, "figure6.pdf"), width = 11, height = 8.5)
-fig6 <- plotExprHeatmap(sce, hm2 = NULL, k = meta_string, m = NULL, cluster_anno = TRUE, draw_freqs = TRUE) 
-gc()
+plotExprHeatmap(sce, features = "type", by = "cluster_id", k = meta_string, 
+                        bars = TRUE, perc = TRUE)
 dev.off()
-rm(fig6)
-gc()
 
-stop()
 # Figure 7. Distributions of marker intensities (arcsinh-transformed) 
 # in the 20 cell populations obtained with FlowSOM after the metaclustering step 
 # with ConsensusClusterPlus.
 sprintf("Generating figure7.")
 # pdf(file =  file.path(figures_folder, "figure7.pdf"), width = 11, height = 8.5)
-fig7 <- plotClusterExprs(daf, k = meta_string, markers = "type")  
-# ggsave("figure7.pdf", plot = fig7, device = "pdf", path = figures_folder, width = 11, height = 8.5, units = "in")
-ggsave("figure7.png", plot = fig7, device = "png", path = figures_folder, width = 11, height = 8.5, units = "in")
+fig7 <- plotClusterExprs(sce, k = meta_string, features = "type")  
+ggsave("figure7.pdf", plot = fig7, device = "pdf", path = figures_folder, width = 11, height = 8.5, units = "in")
 # dev.off()
-rm(fig7)
-gc()
 
 
 # NOTE: Figure 8. Doesn't make sence for phenotyping data since the intention
