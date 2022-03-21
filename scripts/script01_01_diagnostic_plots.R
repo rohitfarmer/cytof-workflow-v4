@@ -56,31 +56,31 @@ sce <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
 sprintf("DIAGNOSTIC PLOTS")
 
 # Figure 1. Per-sample smoothed densities of marker expression (arcsinh-transformed).
-sprintf("Generating figure1.")
-fig1  <- plotExprs(sce, color_by = "condition")
-fig1$facet$params$ncol <- 5
-ggsave("figure1.png", plot = fig1, device = "png", path = figures_folder, 
-       width = 12, height = 10, units = "in", dpi = 300)
-rm(fig1)
-gc()
+#sprintf("Generating figure1.")
+#fig1  <- plotExprs(sce, color_by = "condition")
+#fig1$facet$params$ncol <- 5
+#ggsave("figure1.png", plot = fig1, device = "png", path = figures_folder, 
+#       width = 12, height = 10, units = "in", dpi = 300)
+#rm(fig1)
+#gc()
 
 # Figure 2. Barplot showing the number of cells measured for each sample in the PBMC dataset.
-sprintf("Generating figure2.")
-sprintf("Number of cells per sample.")
-n_cells(sce)
-fig2 <- plotCounts(sce, color_by = "condition")
-ggsave("figure2.png", plot = fig2, device = "png", path = figures_folder, 
-       width = 12, height = 10, units = "in", dpi = 300)
-rm(fig2)
-gc()
+#sprintf("Generating figure2.")
+#sprintf("Number of cells per sample.")
+#n_cells(sce)
+#fig2 <- plotCounts(sce, color_by = "condition")
+#ggsave("figure2.png", plot = fig2, device = "png", path = figures_folder, 
+#       width = 12, height = 10, units = "in", dpi = 300)
+#rm(fig2)
+#gc()
 
 # Figure 3. MDS plot.
-sprintf("Generating figure3.")
-fig3 <- CATALYST::plotMDS(sce, color_by = "condition")
-ggsave("figure3.png", plot = fig3, device = "png", path = figures_folder, 
-       width = 12, height = 12, units = "in", dpi = 300)
-rm(fig3)
-gc()
+#sprintf("Generating figure3.")
+#fig3 <- CATALYST::plotMDS(sce, color_by = "condition")
+#ggsave("figure3.png", plot = fig3, device = "png", path = figures_folder, 
+#       width = 12, height = 12, units = "in", dpi = 300)
+#rm(fig3)
+#gc()
 
 # Figure 4. Heatmap of the median (archsinh-transformed) marker expression 
 # of lineage markers and functional markers across all cells measured for 
@@ -106,4 +106,4 @@ ggsave("figure5.pdf", plot = fig5, device = "pdf", path = figures_folder, width 
 rm(fig5)
 gc()
 
-loginfo("Done")
+print("Done")

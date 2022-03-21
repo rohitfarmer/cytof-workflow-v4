@@ -8,6 +8,7 @@ condition_levels:
   - Healthy_Day7
   - COVID_Day0
   - COVID_Day7
+cofactor: 150
 no_of_clusters: 20
 meta_string: meta20
 tsne_no_cells: 1000

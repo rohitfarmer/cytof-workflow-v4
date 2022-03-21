@@ -60,7 +60,7 @@ export_20210527_36c covid flu Batch2-20210527-58_Unmixed_Live.fcs	HD206_D7	Healt
 export_20210527_36c covid flu Batch2-20210527-59_Unmixed_Live.fcs	HD209_D0	COVID_Day0	HD209	F
 export_20210527_36c covid flu Batch2-20210527-60_Unmixed_Live.fcs	HD209_D7	COVID_Day7	HD209	F
 export_20210527_36c covid flu Batch2-20210527-61_Unmixed_Live.fcs	HD213_D7	Healthy_Day7	HD213	M
-export_20210527_36c covid flu Batch2-20210527-62_Unmixed_Live.fcs	HD213_D7	Healthy_Day7	HD213	M
+export_20210527_36c covid flu Batch2-20210527-62_Unmixed_Live.fcs	HD213_D0	Healthy_Day0	HD213	M
 export_20210527_36c covid flu Batch2-20210527-63_Unmixed_Live.fcs	HD220_D7	COVID_Day7	HD220	F
 export_20210527_36c covid flu Batch2-20210527-64_Unmixed_Live.fcs	HD220_D0	COVID_Day0	HD220	F
 export_20210527_36c covid flu Batch2-20210527-65_Unmixed_Live.fcs	HD228_D7	COVID_Day7	HD228	M

@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "phospho_mini_noqc_sex_age_20.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -57,6 +57,7 @@ dev.off()
 rm(fig6)
 gc()
 
+stop()
 # Figure 7. Distributions of marker intensities (arcsinh-transformed) 
 # in the 20 cell populations obtained with FlowSOM after the metaclustering step 
 # with ConsensusClusterPlus.

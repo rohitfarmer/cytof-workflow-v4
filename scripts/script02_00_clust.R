@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "phospho_mini_noqc_sex_age_20.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -41,17 +41,17 @@ results_folder <- file.path("results", analysis_name)
 figures_folder <- file.path("figures", analysis_name)
 
 # Load daFrame with arcsinh transformed data saved in script1.
-sprintf("Loading SCE with arcsinh transformed data saved in script1.")
+print("Loading SCE with arcsinh transformed data saved in script1.")
 sce_arcsinh <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
 
 # CLUSTERING (FlowSom).
-sprintf("CLUSTERING (FlowSOM)")
-sec_clust <- cluster(sce_arcsinh, features = type_markers(sce_arcsinh), 
+print("CLUSTERING (FlowSOM)")
+sce_clust <- cluster(sce_arcsinh, features = type_markers(sce_arcsinh), 
                xdim = 10, ydim = 10, maxK = no_of_clusters, seed = 1234) 
 
 # Save daFrame 
-sprintf("Saving SCE with clustering data.")
+print("Saving SCE with clustering data.")
 saveRDS(sce_clust, file.path(results_folder, "sce_clust.rds"))
 
-sprintf("Done")
+print("Done")
 
