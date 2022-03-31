@@ -1,0 +1,21 @@
+original_cluster	new_cluster
+7	Cluster_7
+5	Cluster_5
+4	Cluster_4
+13	Cluster_13
+6	Cluster_6
+3	Cluster_3
+1	Cluster_1
+2	CD11c+ myeloid DC
+9	Cluster_9
+17	Cluster_17
+8	Cluster_8
+19	Cluster_19
+16	Cluster_16
+18	Cluster_18
+20	Cluster_20
+15	Cluster_15
+10	Cluster_10
+14	Cluster_14
+12	Cluster_12
+11	pDC

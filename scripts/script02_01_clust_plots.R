@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -49,12 +49,14 @@ marker_names  <- colnames(sce@metadata$SOM_codes)
 
 # Figure 6. Heatmap of the meadian marker intensities across the 20 cell populations.
 # obtained with FlowSOM after the metaclustering step with ConsensusClusterPlus.
-sprintf("Generating figure6.")
+print("Generating figure6.")
 pdf(file =  file.path(figures_folder, "figure6.pdf"), width = 11, height = 8.5)
-plotExprHeatmap(sce, features = "type", by = "cluster_id", k = meta_string, 
+fig6 <- plotExprHeatmap(sce, features = "type", by = "cluster_id", k = meta_string, 
                         bars = TRUE, perc = TRUE)
+print(fig6)
 dev.off()
 
+stop()
 # Figure 7. Distributions of marker intensities (arcsinh-transformed) 
 # in the 20 cell populations obtained with FlowSOM after the metaclustering step 
 # with ConsensusClusterPlus.

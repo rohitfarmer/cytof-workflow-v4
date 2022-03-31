@@ -52,7 +52,6 @@ figures_folder <- file.path("figures", analysis_name)
 sprintf("Loading daFrame with arcsinh transformed data.")
 sce <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
 
-stop()
 # DIAGNOSTIC PLOTS
 sprintf("DIAGNOSTIC PLOTS")
 
@@ -65,7 +64,6 @@ ggsave("figure1.pdf", plot = fig1, device = "pdf", path = figures_folder,
 rm(fig1)
 gc()
 
-stop()
 
 # Figure 2. Barplot showing the number of cells measured for each sample in the PBMC dataset.
 sprintf("Generating figure2.")

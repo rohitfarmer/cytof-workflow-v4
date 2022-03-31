@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -46,7 +46,8 @@ sce_arcsinh <- readRDS(file.path(results_folder, "sce_arcsinh.rds"))
 
 # CLUSTERING (FlowSom).
 print("CLUSTERING (FlowSOM)")
-sce_clust <- CATALYST::cluster(sce_arcsinh, features = type_markers(sce_arcsinh), 
+set.seed(1234)
+sce_clust <- cluster(sce_arcsinh, features = "type", 
                xdim = 10, ydim = 10, maxK = no_of_clusters, seed = 1234, verbose = TRUE) 
 
 # Save daFrame 

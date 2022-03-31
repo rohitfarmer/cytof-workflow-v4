@@ -8,7 +8,7 @@
 cmd_args = commandArgs(trailingOnly=TRUE)
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
+yaml_file = "pheno_covid_flu_all_gender.yaml"
 
 # Read yaml file. 
 suppressMessages(library(yaml))
@@ -63,6 +63,43 @@ if(!dir.exists(figures_folder)){
   cat(sprintf("%s folder already exists. Output will be over written.", figures_folder))
 }
 
+FCS_resample <- function(x, sample = 0, replace = FALSE, rarefy = FALSE, 
+                         progress = TRUE) {
+  min <- min(flowCore::fsApply(x = x, FUN = function(x) nrow(x), 
+                                                             use.exprs = TRUE))
+  max <- max(flowCore::fsApply(x = x, FUN = function(x) nrow(x), 
+                                                              use.exprs = TRUE))
+  if (sample == 0) 
+    sample <- min
+  
+  ## Remove all .fcs files with less observations than the specified
+  ## sample
+    x <- x[flowCore::fsApply(x = x, FUN = function(x) nrow(x), use.exprs = TRUE) >= 
+                           sample]
+  
+  if (rarefy == FALSE) {
+    for (i in 1:length(x)) {
+      flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])), 
+                                                                                                                                            size = sample, replace = replace), ]
+    }
+    if (progress == TRUE) {
+      cat(paste0("Your samples range between ", min, 
+                                  " and ", max, " cells\n"))
+      cat(paste0("Your samples were randomly subsampled to ", sample, 
+                                  " cells\n"))
+    }
+  } else {
+    for (i in 1:length(x)) {
+      flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])), 
+                                                                                                                                            size = nrow(flowCore::exprs(x[[i]])), replace = replace), 
+                                                         ]
+    }
+    if (progress == TRUE) 
+      cat(paste0("Your samples were randomly subsampled to their respective sample size\n"))
+  }
+  return(x)
+}
+
 # LOAD DATA
 # Read experiment metadata.
 sprintf("Loading experiment metadata: %s", args_file)
@@ -83,6 +120,12 @@ panel <- suppressMessages(read_tsv(file.path("meta", panel_file)))
 sprintf("Loading fcs files mentioned in the experiment metadata into a flowSet: %s", data_location)
 fcs_raw <- read.flowSet(file = md$file_name, path = file.path("data", data_location),
                         transformation = FALSE, truncate_max_range = FALSE)
+
+
+fcs_raw_re <- FCS_resample(fcs_raw, sample = 500000, replace = FALSE, rarefy = FALSE, progress = TRUE)
+fcs_raw <- fcs_raw_re
+rm(fcs_raw_re)
+gc()
 
 # Check for file names. They should match to what is in the md$file_name.
 ids <- c(keyword(fcs_raw, "FILENAME"))
@@ -106,5 +149,5 @@ sce <- prepData(fcs_raw, panel, md, features = panel$fcs_colname, transform = TR
 print("Saving SCE object with arcsinh transformed data.")
 saveRDS(sce, file.path(results_folder, "sce_arcsinh.rds"))
 
-sprintf("Done")
+print("Done")
 

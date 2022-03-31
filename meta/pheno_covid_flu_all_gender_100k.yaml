@@ -14,4 +14,4 @@ no_of_clusters: 20
 meta_string: meta20
 tsne_no_cells: 1000
 umap_no_cells: 1000
-  #merging1_file: pheno_mini_noqc_20_merging1.txt
+merging1_file: pheno_covid_flu_all_gender_100k_merging1.txt
