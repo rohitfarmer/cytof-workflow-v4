@@ -3,6 +3,7 @@ data
 results
 figures
 cytof-workflow-v3-master
+covid_flu
 
 # History files
 .Rhistory

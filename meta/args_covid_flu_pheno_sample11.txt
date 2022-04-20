@@ -1,0 +1,5 @@
+file_name	sample_id	condition	patient_id	gender	cellpopulation	sample_id_orig
+cluster3_sample11_CD11c+CD16+DCs.fcs	cluster3	COVID_Day0	HD168	M	CD11c+CD16+ DC	HD168_D0
+cluster8_sample11_central_memory_t_helper.fcs	cluster8	COVID_Day0	HD168	M	Central memory T helper	HD168_D0
+cluster15_sample11_mature_nk_cells.fcs	cluster15	COVID_Day0	HD168	M	Mature NK cells	HD168_D0
+cluster18_sample11_CD57+PD1+Tc_exhausted_senescent.fcs	cluster18	COVID_Day0	HD168	M	CD57+PD1+Tc exhausted or senescent	HD168_D0

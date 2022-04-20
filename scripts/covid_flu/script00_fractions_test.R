@@ -112,7 +112,8 @@ bp_male_vs_female <- function(dat, cellpop){
                   geom_boxplot() +
                     geom_point(position=position_jitterdodge()) +
                   labs(y = paste0(cellpop,"\n(fraction of live cells)"),
-                  x = "Condition", color = "Gender")
+                  x = "Condition", color = "Gender") +
+                  scale_y_continuous(limits = c(0,0.03))
         ggsave(paste0(cellpop,"_boxplot_mf_covid_day0.png"), plot = p, path = figures_folder, width = 7, height = 5)
 }
 
@@ -126,7 +127,7 @@ dat <-  dat %>% dplyr::mutate(merging1 = as.character(merging1),
                                                     merging1 == "Cluster_15" ~ "Mature NK cells",
                                                     merging1 == "Cluster_18" ~ "CD57+PD1+Tc exhausted or senescent",
                                                     TRUE ~ merging1))
-saveRDS(dat, file.path(results_folder, "sce_post_merging1_export_extra_annotations.rds"))
+#saveRDS(dat, file.path(results_folder, "sce_post_merging1_export_extra_annotations.rds"))
 cellpop_col <- "merging1"
 
 # Calculate per-subject per-cluster fractions of cells. 
@@ -136,13 +137,13 @@ df_cell_fractions <- cell_fractions(dat, cellpop_col)
 df_w_covidd0 <- cellfrac_test_mf(dat, df_cell_fractions, cellpop_col, "COVID_Day0")
 df_w_covidd0_fdr <- df_w_covidd0 %>%
         dplyr::mutate("p.value.fdr" = p.adjust(p.value, method = "fdr"))
-write_tsv(df_w_covidd0_fdr, file.path(results_folder, "male_vs_female_w_covidd0.tsv"))
+#write_tsv(df_w_covidd0_fdr, file.path(results_folder, "male_vs_female_w_covidd0.tsv"))
 
 # Calculate Wilcoxon-test on fractons of cells between samples from covid vs healthy at day 0.
 df_w_day0 <- cellfrac_test_cond(dat, df_cell_fractions, cellpop_col, "Healthy_Day0", "COVID_Day0")
 df_w_day0_fdr <- df_w_day0 %>%
         dplyr::mutate("p.value.fdr" = p.adjust(p.value, method = "fdr"))
-write_tsv(df_w_day0_fdr, file.path(results_folder, "healthyd0_vs_covidd0_w.tsv"))
+#write_tsv(df_w_day0_fdr, file.path(results_folder, "healthyd0_vs_covidd0_w.tsv"))
 
 # Plot box plot for covid vs healthy.
 print("Plotting: covid vs healthy.")
@@ -159,12 +160,44 @@ p <- ggplot(plt_d, aes(x=condition, y=fraction, color = gender)) +
           #geom_dotplot(binaxis='y', stackdir='center', position=position_dodge(1)) +
           labs(y = "CD123+ pDCs\n(fraction of live cells)",
           x = "Condition", color = "Gender")
-ggsave("boxplot_covid_vs_healthy_day0.png", plot = p, path = figures_folder, width = 7, height = 5)
+#ggsave("boxplot_covid_vs_healthy_day0.png", plot = p, path = figures_folder, width = 7, height = 5)
 
 # Box plots for male vs female in the 5 cell populations. 
-cellpopulations <- c("CD11c+CD16+ DC", "Central memory T helper", 
-                     "Mature NK cells", "CD57+PD1+Tc exhausted or senescent", "CD11c+ myeloid DC")
+# cellpopulations <- c("CD11c+CD16+ DC", "Central memory T helper", 
+#                      "Mature NK cells", "CD57+PD1+Tc exhausted or senescent", "CD11c+ myeloid DC")
  
-for(cellpop in cellpopulations){
-        bp_male_vs_female(dat, cellpop)
-}
+          # for(cellpop in cellpopulations){
+          #         bp_male_vs_female(dat, cellpop)
+          # }
+
+# Carefully plot just two populations matching the scale etc.
+
+# CD11c+ DC
+samp_gend <- dplyr::filter(dat, condition == "COVID_Day0") %>%
+droplevels() %>%
+dplyr::select(sample_id, gender, condition) %>%
+unique()
+frac <- dplyr::filter(df_cell_fractions, merging1 == "CD11c+ myeloid DC")
+plt_d <- inner_join(samp_gend, frac)
+p <- ggplot(plt_d, aes(x=condition, y=fraction, color = gender)) + 
+          geom_boxplot() +
+            geom_point(position=position_jitterdodge()) +
+          labs(y = paste0("CD11c+ DC","\n(fraction of live cells)"),
+          x = "Condition", color = "Gender") +
+          scale_y_continuous(limits = c(0,0.03)) +
+          theme(text = element_text(size = 20)) 
+ggsave(paste0("CD11c+ DC","_boxplot_mf_covid_day0.png"), plot = p, path = figures_folder, width = 7, height = 5)
+
+# CD11c+CD16+ DC
+frac <- dplyr::filter(df_cell_fractions, merging1 == "CD11c+CD16+ DC")
+plt_d <- inner_join(samp_gend, frac)
+p <- ggplot(plt_d, aes(x=condition, y=fraction, color = gender)) + 
+          geom_boxplot() +
+            geom_point(position=position_jitterdodge()) +
+          labs(y = paste0("CD11c+CD16+ DC","\n(fraction of live cells)"),
+          x = "Condition", color = "Gender") +
+          scale_y_continuous(limits = c(0,0.07)) +
+          theme(text = element_text(size = 20)) 
+ggsave(paste0("CD11c+CD16+ DC","_boxplot_mf_covid_day0.png"), plot = p, path = figures_folder, width = 7, height = 5)
+
+
