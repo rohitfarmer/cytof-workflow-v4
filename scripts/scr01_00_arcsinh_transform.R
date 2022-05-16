@@ -39,6 +39,8 @@ umap_no_cells <- yam$umap_no_cells
 meta_string <- yam$meta_string
 cofactor <- yam$cofactor
 FACS <- yam$FACS
+resample <- yam$resample
+resample_no_cells <- yam$resample_no_cells
 
 # Load external libraries.
 cat("Loading external libraries.\n")
@@ -122,10 +124,13 @@ fcs_raw <- read.flowSet(file = md$file_name, path = file.path("data", data_locat
                         transformation = FALSE, truncate_max_range = FALSE)
 
 
-fcs_raw_re <- FCS_resample(fcs_raw, sample = 500000, replace = FALSE, rarefy = FALSE, progress = TRUE)
-fcs_raw <- fcs_raw_re
-rm(fcs_raw_re)
-gc()
+# Resample if it is required.
+if(resample == TRUE){
+        fcs_raw_re <- FCS_resample(fcs_raw, sample = resample_no_cells, replace = FALSE, rarefy = FALSE, progress = TRUE)
+        fcs_raw <- fcs_raw_re
+        rm(fcs_raw_re)
+        gc()
+}
 
 # Check for file names. They should match to what is in the md$file_name.
 ids <- c(keyword(fcs_raw, "FILENAME"))
