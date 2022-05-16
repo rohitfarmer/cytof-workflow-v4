@@ -1,5 +1,4 @@
 analysis_name: phospho_mini_noqc_sex_age_20
-data_type: stimulation # or phenotyping
 data_location: mini/cytof_phospho_processed_local # Within data folder.
 args_file: args_mini_phospho_noqc_sex_age.txt # Within meta folder.
 panel_file: panel/phospho_panel_v4.txt # Within meta folder.
@@ -9,9 +8,10 @@ condition_levels:
 comparison:
   - Control
   - Case
-cofactor: 5 # for cytof data.
+cofactor: 5 # 5 for cytof and 150 for flow data.
+FACS: FALSE # TRUE for flow data.
 no_of_clusters: 20
 meta_string: meta20
 tsne_no_cells: 500
 umap_no_cells: 1000
-merging1_file: phospho_mini_noqc_20_merging1.txt
+  #merging1_file: phospho_mini_noqc_20_merging1.txt
