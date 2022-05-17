@@ -11,7 +11,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender.yaml"
+yaml_file = "phospho_h1n1_90k_20.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -28,6 +28,7 @@ if(interactive()){
 }
 
 analysis_name <- yam$analysis_name
+analysis_type <- yam$analysis_type
 meta_string <- yam$meta_string
 
 # Load external libraries.
@@ -40,31 +41,28 @@ results_folder <- file.path("results", analysis_name)
 figures_folder <- file.path("figures", analysis_name)
 
 # Load SCE with clustering results saved in script2.
-sprintf("Loading SCE with clustering results saved in script2.")
+cat("Loading SCE with clustering results saved in script2.\n")
 sce <- readRDS(file.path(results_folder, "sce_clust.rds"))
 
 # Extract marker names from daf. There are multiple places from where it can be
 # extracted. I am extracting it from colnames of SOM_codes matrix.
-marker_names  <- colnames(sce@metadata$SOM_codes)
+state_marker_names  <- setdiff(rownames(sce),colnames(sce@metadata$SOM_codes))
 
 # Figure 6. Heatmap of the meadian marker intensities across the 20 cell populations.
 # obtained with FlowSOM after the metaclustering step with ConsensusClusterPlus.
-print("Generating figure6.")
+cat("Generating figure6.\n")
 pdf(file =  file.path(figures_folder, "figure6.pdf"), width = 11, height = 8.5)
 fig6 <- plotExprHeatmap(sce, features = "type", by = "cluster_id", k = meta_string, 
                         bars = TRUE, perc = TRUE)
 print(fig6)
 dev.off()
 
-stop()
 # Figure 7. Distributions of marker intensities (arcsinh-transformed) 
 # in the 20 cell populations obtained with FlowSOM after the metaclustering step 
 # with ConsensusClusterPlus.
-sprintf("Generating figure7.")
-# pdf(file =  file.path(figures_folder, "figure7.pdf"), width = 11, height = 8.5)
+cat("Generating figure7.\n")
 fig7 <- plotClusterExprs(sce, k = meta_string, features = "type")  
 ggsave("figure7.pdf", plot = fig7, device = "pdf", path = figures_folder, width = 11, height = 8.5, units = "in")
-# dev.off()
 
 
 # NOTE: Figure 8. Doesn't make sence for phenotyping data since the intention
@@ -73,16 +71,14 @@ ggsave("figure7.pdf", plot = fig7, device = "pdf", path = figures_folder, width 
 # Figure 8. Heatmap of the median marker intensities of the 10 lineage markers
 # and one signaling marker (pS6) across the 20 cell populations obtained with 
 # FlowSOM after the metaclustering step with ConsensusClusterPlus (PBMC data).
-# sprintf("Generating figure8.")
-# for (i in marker_names){
-#         logdebug("Generating plot for %s", i)
-#         pdf(file = file.path(figures_folder, paste("figure8_", i, ".pdf", sep = "")), width = 20, height = 8.5)
-#         fig8 <- plotClusterHeatmap(daf, hm2 = i, k = meta_string, draw_freqs = TRUE)
-#         logdebug("Done plotClusterHeatmap for %s", i)
-#         dev.off()
-#         logdebug("Done dev off for %s", i)
-#         rm(fig8)
-#         gc()
-# }
+if(analysis_type == "stimulation"){
+        cat("Stimulation data, generating figure8.\n")
+        for (i in state_marker_names){
+                pdf(file = file.path(figures_folder, paste("figure8_", i, ".pdf", sep = "")), width = 20, height = 8.5)
+                fig8 <- plotMultiHeatmap(sce, hm1 = "type", hm2 = i, k = meta_string, row_anno = FALSE, bars = TRUE, perc = TRUE)
+                print(fig8)
+                dev.off()
+        }
+}
 
-sprintf("Done")
+cat("Done")

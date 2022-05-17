@@ -28,7 +28,6 @@ if(interactive()){
 }
 
 analysis_name <- yam$analysis_name
-data_type <- yam$data_type
 data_location <- yam$data_location
 args_file <- yam$args_file
 panel_file <- yam$panel_file

@@ -1,4 +1,5 @@
 analysis_name: phospho_mini_noqc_sex_age_20
+analysis_type: stimulation # stimulation or phenotyping. it is required by one of the scripts to decide whether to plot or not.
 data_location: mini/cytof_phospho_processed_local # Within data folder.
 args_file: args_mini_phospho_noqc_sex_age.txt # Within meta folder.
 panel_file: panel/phospho_panel_v4.txt # Within meta folder.
