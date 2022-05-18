@@ -1,4 +1,4 @@
 #!/bin/bash
 
 module load Anaconda3/2020.07
-singularity shell --bind "$PWD" cytofworkflow4.sif
+singularity shell --bind "$PWD" /hpcdata/chi/containers/platform_specific/cytof/cytofworkflow4.sif

@@ -11,6 +11,8 @@ comparison:
   - Case
 cofactor: 5 # 5 for cytof and 150 for flow data.
 FACS: FALSE # TRUE for flow data.
+resample: FALSE # take all the cells
+resample_no_cells: 900000 # this will not have any effect
 no_of_clusters: 20
 meta_string: meta20
 tsne_no_cells: 500
