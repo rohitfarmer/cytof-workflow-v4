@@ -15,7 +15,7 @@ cmd_args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(yaml))
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender_100k.yaml"
+yaml_file = "gum_20.yaml"
 
 if(interactive()){
         cat("Running in interactive mode.\n")
@@ -48,16 +48,15 @@ figures_folder <- file.path("figures", analysis_name)
 print("Loading SCE with clustering results saved in script2.")
 sce <- readRDS(file.path(results_folder, "sce_clust.rds"))
 
-stop()
 # run t-SNE & UMAP                           
 set.seed(1234)          
 print("Calculating t-SNE and UMAP.")
-#sce_tsne <- runDR(sce, "TSNE", cells = tsne_no_cells, features = "type") 
+sce_tsne <- runDR(sce, "TSNE", cells = tsne_no_cells, features = "type") 
 sce_umap <- runDR(sce, "UMAP", cells = umap_no_cells, features = "type") 
 
 # Save SCE with DR data. 
 print("Saving SCE with DR data.")
-#saveRDS(sce_tsne, file.path(results_folder, "sce_tsne.rds"))
+saveRDS(sce_tsne, file.path(results_folder, "sce_tsne.rds"))
 saveRDS(sce_umap, file.path(results_folder, "sce_umap.rds"))
 
 print("Done")

@@ -8,7 +8,7 @@
 cmd_args = commandArgs(trailingOnly=TRUE)
 
 # For interactive mode
-yaml_file = "pheno_covid_flu_all_gender.yaml"
+yaml_file = "gum_20.yaml"
 
 # Read yaml file. 
 suppressMessages(library(yaml))
@@ -64,41 +64,24 @@ if(!dir.exists(figures_folder)){
   cat(sprintf("%s folder already exists. Output will be over written.", figures_folder))
 }
 
-FCS_resample <- function(x, sample = 0, replace = FALSE, rarefy = FALSE, 
-                         progress = TRUE) {
-  min <- min(flowCore::fsApply(x = x, FUN = function(x) nrow(x), 
-                                                             use.exprs = TRUE))
-  max <- max(flowCore::fsApply(x = x, FUN = function(x) nrow(x), 
-                                                              use.exprs = TRUE))
-  if (sample == 0) 
-    sample <- min
-  
-  ## Remove all .fcs files with less observations than the specified
-  ## sample
-    x <- x[flowCore::fsApply(x = x, FUN = function(x) nrow(x), use.exprs = TRUE) >= 
-                           sample]
-  
-  if (rarefy == FALSE) {
-    for (i in 1:length(x)) {
-      flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])), 
-                                                                                                                                            size = sample, replace = replace), ]
-    }
-    if (progress == TRUE) {
-      cat(paste0("Your samples range between ", min, 
-                                  " and ", max, " cells\n"))
-      cat(paste0("Your samples were randomly subsampled to ", sample, 
-                                  " cells\n"))
-    }
-  } else {
-    for (i in 1:length(x)) {
-      flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])), 
-                                                                                                                                            size = nrow(flowCore::exprs(x[[i]])), replace = replace), 
-                                                         ]
-    }
-    if (progress == TRUE) 
-      cat(paste0("Your samples were randomly subsampled to their respective sample size\n"))
-  }
-  return(x)
+FCS_resample <- function(x, resample_size) {
+        min1 <- min(flowCore::fsApply(x = x, FUN = function(x) nrow(x), use.exprs = TRUE))
+        max1 <- max(flowCore::fsApply(x = x, FUN = function(x) nrow(x), use.exprs = TRUE))
+
+        for (i in 1:length(x)) {
+                samp_size <- nrow(flowCore::exprs(x[[i]]))
+                if(samp_size >= resample_size){
+                        flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])), 
+                                                                                        size = resample_size, replace = FALSE), ]
+                }
+                else if(samp_size < resample_size){
+                        flowCore::exprs(x[[i]]) <- flowCore::exprs(x[[i]])[base::sample(1:nrow(flowCore::exprs(x[[i]])),
+                                                                                        size = samp_size, replace = FALSE), ]
+                }
+        }
+        cat(paste0("Your samples range between ", min1, " and ", max1, " cells\n"))
+        cat(paste0("Your samples were randomly subsampled to ", resample_size, " cells\n"))
+        return(x)
 }
 
 # LOAD DATA
@@ -109,7 +92,6 @@ md<-suppressMessages(read_tsv(file.path("meta",args_file)))
 # Specify levels for conditions & sample IDs to assure desired ordering.
 md$condition <- factor(md$condition, levels = condition_levels)
 md$sample_id  <- factor(md$sample_id, levels = md$sample_id[order(md$condition)]) # this is what paper suggests.
-#md$file_name <- file.path("data", data_location, md$file_name)
 cols_gen <- c("file_name", "sample_id", "condition")
 diff_cols <-  setdiff(colnames(md), cols_gen)
 
@@ -125,7 +107,7 @@ fcs_raw <- read.flowSet(file = md$file_name, path = file.path("data", data_locat
 
 # Resample if it is required.
 if(resample == TRUE){
-        fcs_raw_re <- FCS_resample(fcs_raw, sample = resample_no_cells, replace = FALSE, rarefy = FALSE, progress = TRUE)
+        fcs_raw_re <- FCS_resample(fcs_raw, resample_no_cells)
         fcs_raw <- fcs_raw_re
         rm(fcs_raw_re)
         gc()
@@ -144,10 +126,6 @@ print(sprintf("Spot check that all panel columns are in the flowSet object %s",
 sce <- prepData(fcs_raw, panel, md, features = panel$fcs_colname, transform = TRUE, cofactor = cofactor,
                 md_cols = list(file = "file_name", id = "sample_id", 
                                factors = c("condition", diff_cols)), FACS = FACS)
-
-# Remove fcs raw to save memory.
-#rm(fcs_raw)
-#gc()
 
 # Save SCE object.
 print("Saving SCE object with arcsinh transformed data.")
